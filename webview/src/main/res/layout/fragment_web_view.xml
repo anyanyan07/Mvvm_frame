@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/title_include"
+            layout="@layout/title_layout" />
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.ayy.webview.webviewprocess.BaseWebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".WebViewActivity" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    </LinearLayout>
+
+</layout>

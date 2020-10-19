@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+</head>
+<body>
+<button onclick="showToast('hello world')">toast</button>
+
+</body>
+<script src="js/Native.js"></script>
+<script>
+        function showToast(msg){
+            nativeJs.takeNativeAction("showToast",{message:"hello啊"})
+        }
+</script>
+
+</html>
