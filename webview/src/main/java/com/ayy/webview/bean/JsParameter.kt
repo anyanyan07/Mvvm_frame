@@ -4,5 +4,6 @@ import com.google.gson.JsonObject
 
 data class JsParameter(
     var action:String?,
-    var parameters: JsonObject
+    var parameters: JsonObject,
+    var callbackName:String?
 )

@@ -1,10 +1,11 @@
-package com.ayy.webview
+package com.ayy.webview.autoservice
 
 import android.app.Application
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.NonNull
 import com.ayy.common.IWebViewService
+import com.ayy.webview.WebViewActivity
 import com.ayy.webview.util.Constants
 import com.google.auto.service.AutoService
 

@@ -6,6 +6,7 @@ import com.ayy.base.loadsir.EmptyCallback
 import com.ayy.base.loadsir.ErrorCallback
 import com.ayy.base.loadsir.LoadingCallback
 import com.kingja.loadsir.core.LoadSir
+import org.greenrobot.eventbus.EventBus
 
 
 open class BaseApplication : Application() {
@@ -26,5 +27,6 @@ open class BaseApplication : Application() {
             .addCallback(ErrorCallback())
             .setDefaultCallback(LoadingCallback::class.java) //设置默认状态页
             .commit()
+//        EventBus.builder().addIndex(MyEventBusIndex()).installDefaultEventBus()
     }
 }

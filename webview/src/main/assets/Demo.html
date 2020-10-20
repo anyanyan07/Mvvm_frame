@@ -6,6 +6,8 @@
 </head>
 <body>
 <button onclick="showToast('hello world')">toast</button>
+<button onclick="openPage()">open page</button>
+<button onclick="login()">login</button>
 
 </body>
 <script src="js/Native.js"></script>
@@ -13,6 +15,17 @@
         function showToast(msg){
             nativeJs.takeNativeAction("showToast",{message:"hello啊"})
         }
+        function openPage(){
+            nativeJs.takeNativeAction("openPage",{target:"com.ayy.mvvm_frame.TargetActivity"})
+        }
+        function login(){
+            nativeJs.takeNativeActionWithCallback("login",
+            {},
+            (res)=>{
+                console.log("登录结果："+res)
+            })
+        }
+
 </script>
 
 </html>

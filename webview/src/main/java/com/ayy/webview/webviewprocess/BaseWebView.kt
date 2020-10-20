@@ -6,8 +6,8 @@ import android.util.AttributeSet
 import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
-import android.widget.Toast
 import com.ayy.webview.bean.JsParameter
+import com.ayy.webview.mainprocess.WebViewProcessCommandDispatcher
 import com.ayy.webview.webviewprocess.settings.WebViewDefaultSettings
 import com.ayy.webview.webviewprocess.webChromeClient.MyWebChromeClient
 import com.ayy.webview.webviewprocess.webviewclient.MyWebViewClient
@@ -26,6 +26,7 @@ class BaseWebView : WebView {
     )
 
     init {
+        WebViewProcessCommandDispatcher.Instance.initAidl()
         WebViewDefaultSettings.instance.setSettings(this)
         addJavascriptInterface(this, "android")
     }
@@ -44,17 +45,26 @@ class BaseWebView : WebView {
             Log.e(TAG, "takeNativeAction: js parameter is empty!!!")
             return
         }
-        var jsParameter = Gson().fromJson(json, JsParameter::class.java)
-        when (jsParameter.action) {
-            "showToast" -> {
-                Toast.makeText(
-                    context,
-                    jsParameter.parameters.get("message").asString,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            else -> {
+        val jsParameter = Gson().fromJson(json, JsParameter::class.java)
+        val callbackName = jsParameter.callbackName
+        WebViewProcessCommandDispatcher.Instance.dispatch(
+            jsParameter.action,
+            Gson().toJson(jsParameter.parameters),
+            this
+        )
+    }
+
+    fun handleCallback(callbackName: String?, response: String?) {
+        Log.e(TAG, "handleCallback: ${callbackName}, ${response}")
+        if (!TextUtils.isEmpty(callbackName) && !TextUtils.isEmpty(response)) {
+            post {
+                val jsCode = "javascript:nativeJs.callback('${callbackName}','${response}')"
+                Log.e(TAG, "handleCallback: ${jsCode}" )
+                evaluateJavascript(jsCode, null);
             }
         }
+
     }
+
+
 }

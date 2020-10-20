@@ -5,6 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
+        <service
+            android:name=".mainprocess.WebViewService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity
             android:name=".WebViewActivity"
             android:launchMode="singleTask"
