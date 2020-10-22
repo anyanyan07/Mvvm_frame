@@ -17,7 +17,8 @@ class MainActivity : AppCompatActivity() {
         AutoServiceUtils.load(IWebViewService::class.java)
             ?.startWebViewActivity(
                 this,
-                Constant.ANDROID_ASSET_URI + "Demo.html",
+//                Constant.ANDROID_ASSET_URI + "Demo.html",
+                "http://ynyd.ynicity.cn:9080/flep/app/snapshot",
                 showTitle = true
             )
     }

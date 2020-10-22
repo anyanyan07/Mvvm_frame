@@ -49,6 +49,10 @@ class WebViewFragment : Fragment(), WebViewCallback {
             container,
             false
         )
+        //todo
+//        mBinding.btn.setOnClickListener{
+//            mBinding.webView.evaluateJavascript("javascript:flepVoiceFill('{}')",null)
+//        }
         initTitle()
         mBinding.webView.setWebViewCallback(this)
         mBinding.refreshLayout.setEnableLoadMore(false)

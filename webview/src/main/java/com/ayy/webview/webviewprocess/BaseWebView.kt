@@ -63,8 +63,5 @@ class BaseWebView : WebView {
                 evaluateJavascript(jsCode, null);
             }
         }
-
     }
-
-
 }
