@@ -17,9 +17,11 @@ import com.ayy.webview.webviewprocess.webviewclient.WebViewCallback
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 
-class WebViewFragment : Fragment(), WebViewCallback {
+class WebViewFragment : Fragment(), WebViewCallback, OnRefreshListener {
     private lateinit var mBinding: FragmentWebViewBinding
     private var url: String? = null
     private var title: String? = null
@@ -49,14 +51,11 @@ class WebViewFragment : Fragment(), WebViewCallback {
             container,
             false
         )
-        //todo
-//        mBinding.btn.setOnClickListener{
-//            mBinding.webView.evaluateJavascript("javascript:flepVoiceFill('{}')",null)
-//        }
         initTitle()
         mBinding.webView.setWebViewCallback(this)
         mBinding.refreshLayout.setEnableLoadMore(false)
         mBinding.refreshLayout.setEnableRefresh(canNativeRefresh)
+        mBinding.refreshLayout.setOnRefreshListener(this)
         loadService =
             LoadSir.getDefault()
                 .register(mBinding.refreshLayout, object : Callback.OnReloadListener {
@@ -88,12 +87,18 @@ class WebViewFragment : Fragment(), WebViewCallback {
 
     companion object {
         @JvmStatic
-        fun newInstance(url: String?, title: String? = null, showTitle: Boolean = true) =
+        fun newInstance(
+            url: String?,
+            title: String? = null,
+            showTitle: Boolean = true,
+            canNativeRefresh: Boolean = true
+        ) =
             WebViewFragment().apply {
                 arguments = Bundle().apply {
                     putString(Constants.URL, url)
                     putString(Constants.TITLE, title)
                     putBoolean(Constants.SHOW_TITLE, showTitle)
+                    putBoolean(Constants.CAN_NATIVE_REFRESH, canNativeRefresh)
                 }
             }
     }
@@ -113,6 +118,7 @@ class WebViewFragment : Fragment(), WebViewCallback {
         } else {
             loadService?.showSuccess()
         }
+        mBinding.refreshLayout.finishRefresh()
     }
 
     override fun onError() {
@@ -121,5 +127,9 @@ class WebViewFragment : Fragment(), WebViewCallback {
 
     override fun updateTitle(title: String?) {
         mBinding.titleInclude.tvTitle.text = title
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        mBinding.webView.reload()
     }
 }

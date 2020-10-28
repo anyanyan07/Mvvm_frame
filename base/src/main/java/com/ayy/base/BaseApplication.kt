@@ -6,12 +6,27 @@ import com.ayy.base.loadsir.EmptyCallback
 import com.ayy.base.loadsir.ErrorCallback
 import com.ayy.base.loadsir.LoadingCallback
 import com.kingja.loadsir.core.LoadSir
-import org.greenrobot.eventbus.EventBus
+import com.scwang.smart.refresh.footer.ClassicsFooter
+import com.scwang.smart.refresh.header.ClassicsHeader
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 
 open class BaseApplication : Application() {
 
     companion object {
+        init {
+            //设置全局的Header构建器
+            SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, layout ->
+                layout.setPrimaryColorsId(android.R.color.holo_blue_bright, android.R.color.white)
+                ClassicsHeader(Companion.context)
+            }
+            SmartRefreshLayout.setDefaultRefreshFooterCreator { context, layout ->
+                ClassicsFooter(
+                    context
+                ).setDrawableSize(20f)
+            }
+        }
+
         lateinit var context: Context
         fun getInstance(): Context {
             return context

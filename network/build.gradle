@@ -1,20 +1,19 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.ayy.mvvm_frame"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        flavorDimensions "default"
-        multiDexEnabled true
+
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -23,19 +22,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    buildFeatures {
-        dataBinding true
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    productFlavors {
-        mvvm_test {
-        }
-        mvvm_online {
-
-        }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 
@@ -43,10 +35,13 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.androidxVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintlayout"
-    implementation project(":webview")
-    implementation project(":common")
-    implementation project(":base")
-    implementation project(":wan_android")
 
+    //retrofit
+    api "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
+    api "com.squareup.retrofit2:adapter-rxjava3:$rootProject.retrofit"
+    api "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
+    
+    //rx
+    api 'io.reactivex.rxjava3:rxjava:3.0.7'
+    api 'io.reactivex.rxjava3:rxandroid:3.0.0'
 }
