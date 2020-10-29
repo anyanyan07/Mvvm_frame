@@ -2,7 +2,7 @@ package com.ayy.wan_android.net
 
 import com.ayy.network.Http
 import com.ayy.wan_android.BuildConfig
-import com.ayy.wan_android.base.BaseResponse
+import com.ayy.base.BaseResponse
 import com.ayy.wan_android.bean.ArticleChannel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -25,7 +25,7 @@ class WanAndroid private constructor() {
         return apiService
     }
 
-    public fun getSystem(): Observable<BaseResponse<ArrayList<ArticleChannel>>> {
+    public fun getSystem(): Observable<BaseResponse<List<ArticleChannel>>> {
         return apiService.getSystem()
             .compose(applyTransform())
     }

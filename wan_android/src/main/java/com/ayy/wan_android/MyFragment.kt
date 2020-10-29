@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.ayy.base.BaseApplication
 import com.ayy.base.loadsir.ErrorCallback
 import com.ayy.base.loadsir.LoadingCallback
 import com.ayy.base.mvvm.BaseViewModel
@@ -45,13 +47,14 @@ class MyFragment : Fragment(), IBaseModelListener<List<BaseViewModel>>, OnRefres
         adapter = MyAdapter()
         mBinding.rv.adapter = adapter
         model = ArticleListModel(tabId ?: -1, this)
-        loadService = LoadSir.getDefault()
-            .register(mBinding.refreshLayout) {
-                loadService.showCallback(LoadingCallback::class.java)
-                model.load()
-            }
-        model.load()
-        return loadService.loadLayout
+//        loadService = LoadSir.getDefault()
+//            .register(mBinding.refreshLayout) {
+//                loadService.showCallback(LoadingCallback::class.java)
+//                model.getCachedAndLoad()
+//            }
+        model.getCachedAndLoad()
+//        return loadService.loadLayout
+        return mBinding.root
     }
 
     companion object {
@@ -65,23 +68,11 @@ class MyFragment : Fragment(), IBaseModelListener<List<BaseViewModel>>, OnRefres
         }
     }
 
-    override fun onLoadSuccess(data: List<BaseViewModel>, page: PageResult?) {
-        loadService.showSuccess()
-        if (page?.isFirstPage == true) {
-            viewModels.clear()
-            mBinding.refreshLayout.finishRefresh()
+    override fun onLoadFail(message: String, isFromCache: Boolean, page: PageResult?) {
+        if (isFromCache && page?.isFirstPage == true) {
+//            loadService.showCallback(ErrorCallback::class.java)
         }
-        mBinding.refreshLayout.finishLoadMore(0, true, page?.hasNextPage == false)
-        viewModels.addAll(data)
-        adapter.data = viewModels.toList()
-    }
-
-    override fun onLoadFail(message: String, page: PageResult?) {
-        if (page?.isFirstPage == true) {
-            loadService.showCallback(ErrorCallback::class.java)
-        } else {
-            loadService.showSuccess()
-        }
+        Toast.makeText(BaseApplication.context, message, Toast.LENGTH_SHORT).show()
         mBinding.refreshLayout.finishRefresh()
         mBinding.refreshLayout.finishLoadMore()
     }
@@ -92,6 +83,23 @@ class MyFragment : Fragment(), IBaseModelListener<List<BaseViewModel>>, OnRefres
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         model.refresh()
+    }
+
+    override fun onLoadSuccess(
+        data: List<BaseViewModel>?,
+        isFromCache: Boolean,
+        page: PageResult?
+    ) {
+//        loadService.showSuccess()
+        mBinding.refreshLayout.finishRefresh()
+        mBinding.refreshLayout.finishLoadMore()
+        if(page?.isFirstPage==true){
+            viewModels.clear()
+        }
+        data?.apply {
+            viewModels.addAll(this)
+        }
+        adapter.data = viewModels
     }
 
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import com.ayy.base.loadsir.EmptyCallback
 import com.ayy.base.loadsir.ErrorCallback
 import com.ayy.base.loadsir.LoadingCallback
+import com.ayy.base.utils.CacheUtils
 import com.kingja.loadsir.core.LoadSir
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
@@ -42,6 +43,7 @@ open class BaseApplication : Application() {
             .addCallback(ErrorCallback())
             .setDefaultCallback(LoadingCallback::class.java) //设置默认状态页
             .commit()
+        CacheUtils.init(this)
 //        EventBus.builder().addIndex(MyEventBusIndex()).installDefaultEventBus()
     }
 }

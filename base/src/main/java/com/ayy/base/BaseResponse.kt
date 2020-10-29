@@ -1,4 +1,4 @@
-package com.ayy.wan_android.base
+package com.ayy.base
 
 data class BaseResponse<T>(
     var errorCode: Int?,
